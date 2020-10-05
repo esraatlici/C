@@ -1,0 +1,17 @@
+#include<stdio.h>
+
+int main()
+{
+	int *p,tam=35;
+	p=&tam;
+	printf("tam icerik: %d",tam);
+	printf("\np icerik: %d",p);
+	printf("\ntam adres: %p",&tam);
+	printf("\np adres: %p",&p);
+	printf("\np icerik: %d",*p);
+	return 0;
+}
+
+
+
+

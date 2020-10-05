@@ -1,0 +1,134 @@
+#include <stdio.h>
+#include <stdlib.h>
+//Ikili arama agaci ekleme, silme ve toplam kac node var.
+//Mehmet Dorukcan CAKIR
+
+typedef struct Tree
+{
+    int sayi;
+    struct Tree *sag;
+    struct Tree *sol;
+}Agac;
+
+Agac *kok=NULL;
+int sayac=0;
+
+Agac *DegerAl()
+{
+    Agac *yeni=(Agac *)malloc(sizeof(Agac));
+    if(yeni==NULL)
+    {
+        printf("Bellek dolu...");
+        return NULL;
+    }
+    printf("Eleman gir:");
+    scanf("%d",&(yeni->sayi));
+    yeni->sag=NULL;
+    yeni->sol=NULL;
+    return yeni;
+}
+
+void Ekle(Agac *agackok,Agac *yeni)
+{
+    if(agackok==NULL)
+        kok=yeni;
+    else if(yeni->sayi < agackok->sayi)
+    {
+        if(agackok->sol==NULL)
+            agackok->sol=yeni;
+        else
+            Ekle(agackok->sol,yeni);
+    }
+    else
+    {
+        if(agackok->sag==NULL)
+            agackok->sag=yeni;
+        else
+            Ekle(agackok->sag,yeni);
+    }
+}
+
+void Listele(Agac *agackok)
+{
+    if(agackok!=NULL)
+    {
+        Listele(agackok->sol);
+        printf("%d\n",agackok->sayi);
+        Listele(agackok->sag);
+    }
+}
+
+int ToplaGel(Agac *agackok)
+{
+    if(agackok==NULL)
+        return 0;
+    else
+    {
+	    sayac+=1;
+        return ToplaGel(agackok->sol) + ToplaGel(agackok->sag);
+    }
+}
+
+
+
+int enBuyuk(Agac *agackok)
+{
+    while(agackok->sag!=NULL)
+        agackok=agackok->sag;
+    return agackok->sayi;
+}
+int enKucuk(Agac *agackok)
+{
+    while(agackok->sol!=NULL)
+        agackok=agackok->sol;
+    return agackok->sayi;
+}
+
+Agac *Sil(Agac *agackok,int silSayi)
+{
+    if(agackok==NULL)
+        return NULL;
+    if(agackok->sayi==silSayi)
+    {
+        if(agackok->sol==NULL && agackok->sag==NULL)
+            return NULL;
+        if(agackok->sag!=NULL)
+        {
+            agackok->sayi=enKucuk(agackok->sag);
+            agackok->sag=Sil(agackok->sag,enKucuk(agackok->sag));
+            return agackok;
+        }
+        agackok->sayi=enBuyuk(agackok->sol);
+        agackok->sol=Sil(agackok->sol,enBuyuk(agackok->sol));
+        return agackok;
+    }
+    if(agackok->sayi < silSayi)
+    {
+        agackok->sag=Sil(agackok->sag,silSayi);
+        return agackok;
+    }
+    agackok->sol=Sil(agackok->sol,silSayi);
+    return agackok;
+}
+
+int main()
+{
+    Agac *yeni;
+    int toplam;
+    yeni=DegerAl();
+    Ekle(kok,yeni);
+    yeni=DegerAl();
+    Ekle(kok,yeni);
+    yeni=DegerAl();
+    Ekle(kok,yeni);
+    yeni=DegerAl();
+    Ekle(kok,yeni);
+    yeni=DegerAl();
+    Ekle(kok,yeni);
+    Listele(kok);
+    printf("-----------\n");
+
+    ToplaGel(kok);
+    printf("\n\nToplam eleman=%d\n",sayac);
+    return 0;
+}

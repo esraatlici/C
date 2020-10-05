@@ -1,0 +1,5 @@
+bağlı liste
+yığın
+kuyruk
+sıralı algoritmaları
+-merge,shell,bubble,selection,insertion
